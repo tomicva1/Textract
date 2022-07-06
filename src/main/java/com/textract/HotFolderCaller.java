@@ -64,11 +64,15 @@ public class HotFolderCaller {
                     }
 
                     FileUtils.cleanDirectory(new File(path));
+
                     //TEXTRACT
                     //DOCUMENT_PROCESS.processDocuments(name);
 
-                    //Google
-                    DOCUMENT_PROCESS.processDocumentsGoogle(name);
+                    //GOOGLE
+                    //DOCUMENT_PROCESS.processDocumentGoogle(name);
+
+                    //AZURE
+                    DOCUMENT_PROCESS.processDocumentsAzure(name);
 
                     DOCUMENT_PROCESS.deleteFiles();
                 }

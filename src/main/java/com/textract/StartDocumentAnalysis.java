@@ -35,17 +35,5 @@ public class StartDocumentAnalysis {
 
     public static void main(String[] args) {
         hotFolderCaller.watchFolder();
-
-
-        /*Region region = Region.EU_CENTRAL_1;
-        TextractClient textractClient = TextractClient.builder()
-                .region(region)
-                .build();
-
-        String bucketName = args[0];
-        String docName = args[1];
-
-        startDocAnalysisS3 (textractClient, bucketName, docName);
-        textractClient.close();*/
     }
 }

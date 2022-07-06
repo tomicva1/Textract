@@ -1,4 +1,5 @@
 import com.amazonaws.services.iotevents.model.Input;
+import com.textract.DocumentProcess;
 import org.apache.pdfbox.contentstream.PDContentStream;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -73,48 +74,9 @@ public class AmazonTextractServiceIntegrationTest {
 
     @Test
     public void myTest1() throws IOException, JSONException {
-        //File file = new File("D:/Downloads/outputs_InputEnglish_output-1-to-1.json");
-        String jsonContents = new String(Files.readAllBytes(Paths.get("D:/Downloads/outputs_InputEnglish_output-1-to-1.json")));
-        //String jsonContents = new String(firstOutputFile.getContent());
+        DocumentProcess process = new DocumentProcess();
 
-        //String jsonContents = "";
-        //System.out.println("MOJE: " + jsonContents);
-
-        JSONObject obj = new JSONObject(jsonContents);
-
-        XWPFDocument document = new XWPFDocument();
-
-        JSONArray responses = obj.getJSONArray("responses");
-        for(int i = 0; i < responses.length(); i++){
-            JSONArray pages = responses.getJSONObject(i).getJSONObject("fullTextAnnotation").getJSONArray("pages");
-            for(int j = 0; j < pages.length(); j++) {
-                JSONArray blocks = pages.getJSONObject(j).getJSONArray("blocks");
-                for(int k = 0; k < blocks.length(); k++) {
-                    if (blocks.getJSONObject(k).getString("blockType").equals("TEXT")) {
-                        JSONArray paragraphs = blocks.getJSONObject(k).getJSONArray("paragraphs");
-                        for (int l = 0; l < paragraphs.length(); l++) {
-                            String paragraph = "";
-                            JSONArray words = paragraphs.getJSONObject(l).getJSONArray("words");
-                            for (int m = 0; m < words.length(); m++) {
-                                JSONArray symbols = words.getJSONObject(m).getJSONArray("symbols");
-                                for (int n = 0; n < symbols.length(); n++){
-                                    JSONObject symbol = symbols.getJSONObject(n);
-                                    paragraph = paragraph + symbol.getString("text");
-                                    if(symbol.has("property") && symbol.getJSONObject("property").has("detectedBreak") && symbol.getJSONObject("property").getJSONObject("detectedBreak").has("type")){
-                                        if(symbol.getJSONObject("property").getJSONObject("detectedBreak").getString("type").equals("SPACE"))
-                                            paragraph = paragraph + " ";
-                                        else if (symbol.getJSONObject("property").getJSONObject("detectedBreak").getString("type").equals("LINE_BREAK"))
-                                            paragraph = paragraph + " ";
-                                    }
-                                }
-                            }
-                            System.out.println(paragraph);
-                            writeToDocxFile(paragraph, document);
-                        }
-                    }
-                }
-            }
-        }
+        process.processDocumentGoogle("test");
     }
 
     private void writeToDocxFile(String text, XWPFDocument document) throws IOException{
